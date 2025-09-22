@@ -1,126 +1,63 @@
-using System;
-using System.Collections.Generic;
+
 
 namespace RoleplayGame.Library
 {
-    // Clase que representa un arma o escudo del caballero
-    public class Elemento
+    // Clase Espada (equivalente a Arco del Elfo)
+    public class Espada
     {
-        public string Nombre;
-        public int Danio;   // Ataque del elemento
-        public int Defensa; // Defensa del elemento
-
-        public Elemento(string nombre, int danio, int defensa)
-        {
-            Nombre = nombre;
-            Danio = danio;
-            Defensa = defensa;
-        }
+        public int Danio = 25; // daño base de la espada
     }
 
-    // Clase que representa el inventario de elementos del caballero
-    public class Inventario
+    // Clase Escudo (igual que en Elfo)
+    public class Escudo
     {
-        public List<Elemento> Items = new List<Elemento>();
-
-        // Retorna el ataque total de todos los elementos
-        public int DanioTotal()
-        {
-            int total = 0;
-            foreach (var item in Items)
-            {
-                total += item.Danio;
-            }
-            return total;
-        }
-
-        // Retorna la defensa total de todos los elementos
-        public int DefensaTotal()
-        {
-            int total = 0;
-            foreach (var item in Items)
-            {
-                total += item.Defensa;
-            }
-            return total;
-        }
+        public int Defensa = 15; // defensa base del escudo
     }
 
-    // Clase principal Caballero
     public class Caballero
     {
         public string Nombre;
-        private int maxHP = 120; 
-        private int hp;
-        public int HP
-        {
-            get { return hp; }
-            set
-            {
-                if (value > maxHP) hp = maxHP;
-                else if (value < 0) hp = 0;
-                else hp = value;
-            }
-        }
+        public int HP;
+        public int MaxHP = 120;
 
-        public Inventario Inventario;
+        public Espada Espada;
+        public Escudo Escudo;
 
         // Constructor
-        public Caballero(string nombre, int hp, Inventario inventario = null)
+        public Caballero(string nombre)
         {
             Nombre = nombre;
-            HP = hp;
-            Inventario = inventario;
+            HP = MaxHP;
+            Espada = new Espada();
+            Escudo = new Escudo();
         }
 
-        // Retorna la defensa total del caballero (armadura + escudos)
-        public int DefensaTotal()
-        {
-            int total = 0;
-            if (Inventario != null)
-                total += Inventario.DefensaTotal();
-            return total;
-        }
-
-        // Retorna el ataque total del caballero (espadas, armas)
+        // Daño total (solo la espada)
         public int DanioTotal()
         {
-            int total = 0;
-            if (Inventario != null)
-                total += Inventario.DanioTotal();
-            return total;
+            return Espada.Danio;
+        }
+
+        // Defensa total (solo el escudo)
+        public int DefensaTotal()
+        {
+            return Escudo.Defensa;
         }
 
         // Resumen de stats
         public string ResumenStats()
         {
-            return "Defensa: " + DefensaTotal() + " | Daño: " + DanioTotal() + " | Vida: " + HP;
+            return "Caballero " + Nombre + " → Vida: " + HP + " | Daño: " + DanioTotal() + " | Defensa: " + DefensaTotal();
         }
 
-        // Cura al caballero una cantidad fija (puede ser un poción o descanso)
+        // Cura
         public void Cura()
         {
-            HP += 20; 
-            if (HP > maxHP) HP = maxHP;
+            HP += 20;
+            if (HP > MaxHP) HP = MaxHP;
         }
 
-        // Recibir daño de otro personaje
-        public void RecibirDanio(int danio)
-        {
-            int danioRecibido = danio - DefensaTotal();
-            if (danioRecibido < 0) danioRecibido = 0;
-            HP -= danioRecibido;
-        }
-
-        // Cambiar un elemento (armadura o arma)
-        public void CambiarElemento(Elemento viejo, Elemento nuevo)
-        {
-            if (Inventario != null && Inventario.Items.Contains(viejo))
-            {
-                Inventario.Items.Remove(viejo);
-                Inventario.Items.Add(nuevo);
-            }
-        }
+        // Atacar a otro caballero
         public void Atacar(Caballero objetivo)
         {
             int danioReal = DanioTotal() - objetivo.DefensaTotal();
@@ -128,7 +65,16 @@ namespace RoleplayGame.Library
             objetivo.HP -= danioReal;
             if (objetivo.HP < 0) objetivo.HP = 0;
 
-            Console.WriteLine(Nombre + " ataco a " + objetivo.Nombre + " dañando " + danioReal + " de daño");
+            Console.WriteLine(Nombre + " atacó a " + objetivo.Nombre + " causando " + danioReal + " de daño");
+        }
+
+        // Recibir daño directo
+        public void RecibirDanio(int danio)
+        {
+            int danioRecibido = danio - DefensaTotal();
+            if (danioRecibido < 0) danioRecibido = 0;
+            HP -= danioRecibido;
+            if (HP < 0) HP = 0;
         }
     }
 }
