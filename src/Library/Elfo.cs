@@ -5,7 +5,7 @@
         public int Danio = 20;
     }
 
-    public class Escudo
+    public class Escudoo
     {
         public int Defensa = 10;
     }
@@ -16,14 +16,14 @@
         public int HP;
         public int MaxHP = 90;
         public Arco Arco;
-        public Escudo Escudo;
+        public Escudoo Escudo;
 
         public Elfo(string nombre)
         {
             Nombre = nombre;
             HP = MaxHP;
             Arco = new Arco();
-            Escudo = new Escudo();
+            Escudo = new Escudoo();
         }
 
         public int DanioTotal()
