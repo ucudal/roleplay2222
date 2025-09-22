@@ -3,7 +3,7 @@
 namespace RoleplayGame.Library
 {
     // Clase Espada (equivalente a Arco del Elfo)
-    public class Espada
+    public class Espadaa
     {
         public int Danio = 25; // daño base de la espada
     }
@@ -20,7 +20,7 @@ namespace RoleplayGame.Library
         public int HP;
         public int MaxHP = 120;
 
-        public Espada Espada;
+        public Espadaa Espada;
         public Escudo Escudo;
 
         // Constructor
@@ -28,7 +28,7 @@ namespace RoleplayGame.Library
         {
             Nombre = nombre;
             HP = MaxHP;
-            Espada = new Espada();
+            Espada = new Espadaa();
             Escudo = new Escudo();
         }
 
