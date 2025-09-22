@@ -3,7 +3,7 @@
 namespace RoleplayGame.Library
 {
     // Clase Espada (equivalente a Arco del Elfo)
-    public class Espada
+    public class Espadaa
     {
         public int Danio = 25; // daño base de la espada
     }
