@@ -20,7 +20,7 @@ namespace RoleplayGame.Library
         public int HP;
         public int MaxHP = 120;
 
-        public Espada Espada;
+        public Espadaa Espada;
         public Escudo Escudo;
 
         // Constructor
@@ -28,7 +28,7 @@ namespace RoleplayGame.Library
         {
             Nombre = nombre;
             HP = MaxHP;
-            Espada = new Espada();
+            Espada = new Espadaa();
             Escudo = new Escudo();
         }
 
