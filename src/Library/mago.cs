@@ -31,7 +31,7 @@ namespace RoleplayGame.Library
         public int Defensa { get; } = 5;
     }
 
-    public class Mago
+    public class Mago : IPersonaje
     {
         public string Nombre;
         public int HP;

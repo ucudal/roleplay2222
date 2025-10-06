@@ -15,7 +15,7 @@ namespace RoleplayGame.Library
         public int Defensa { get; } = 15;
     }
 
-    public class Caballero
+    public class Caballero : IPersonaje
     {
         public string Nombre;
         public int HP;

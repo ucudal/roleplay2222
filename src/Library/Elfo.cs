@@ -14,7 +14,7 @@ namespace RoleplayGame.Library
         public int Defensa { get; } = 10;
     }
 
-    public class Elfo
+    public class Elfo : IPersonaje
     {
         public string Nombre;
         public int HP;

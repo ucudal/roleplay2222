@@ -14,7 +14,7 @@ namespace RoleplayGame.Library
         public int Defensa { get; } = 25;
     }
 
-    public class Enano
+    public class Enano :IPersonaje
     {
         public string Nombre;
         public int HP;

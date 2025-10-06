@@ -1,19 +1,13 @@
-public interface ICharacter
+public interface IPersonaje
 {
     string Nombre { get; set; }
     int MaxHP { get; set; }
     int CurrentHP { get; set; }
-    List<Iobjeto> Equipamiento { get; set; }
-
-    void AddItem(Iobjeto item);
-    void RemoveItem(Iobjeto item);
-    void Heal();
-    void ReceiveAttack(ICharacter atacante);
-    void Attack(ICharacter objetivo);
+    void ReceiveAttack(IPersonaje atacante);
+    void Attack(IPersonaje objetivo);
 }
 
-public interface IMagicCharacter : ICharacter
+public interface IMagicCharacter : IPersonaje
 {
-    void AddMagicItem(IMagicobjeto mItem);
-    void RemoveMagicItem(IMagicobjeto mItem);
+
 }
