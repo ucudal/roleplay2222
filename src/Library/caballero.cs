@@ -1,17 +1,18 @@
 
+using System;
 
 namespace RoleplayGame.Library
 {
-    // Clase Espada (equivalente a Arco del Elfo)
-    public class Espada
+    public class Espada : IObjeto
     {
-        public int Danio = 25; // daño base de la espada
+        public int Danio { get; } = 25;
+        public int Defensa { get; } = 0;
     }
 
-    // Clase Escudo (igual que en Elfo)
-    public class Escudo
+    public class Escudo : IObjeto
     {
-        public int Defensa = 15; // defensa base del escudo
+        public int Danio { get; } = 0;
+        public int Defensa { get; } = 15;
     }
 
     public class Caballero
@@ -23,7 +24,6 @@ namespace RoleplayGame.Library
         public Espada Espada;
         public Escudo Escudo;
 
-        // Constructor
         public Caballero(string nombre)
         {
             Nombre = nombre;
@@ -32,49 +32,64 @@ namespace RoleplayGame.Library
             Escudo = new Escudo();
         }
 
-        // Daño total (solo la espada)
         public int DanioTotal()
         {
             return Espada.Danio;
         }
 
-        // Defensa total (solo el escudo)
         public int DefensaTotal()
         {
             return Escudo.Defensa;
         }
 
-        // Resumen de stats
-        public string ResumenStats()
+        public void AgregarItem(IObjeto item)
         {
-            return "Caballero " + Nombre + " → Vida: " + HP + " | Daño: " + DanioTotal() + " | Defensa: " + DefensaTotal();
+            if (item is Espada e) Espada = e;
+            else if (item is Escudo s) Escudo = s;
         }
 
-        // Cura
+        public void QuitarItem(IObjeto item)
+        {
+            if (item == Espada) Espada = null;
+            if (item == Escudo) Escudo = null;
+        }
+
         public void Cura()
         {
             HP += 20;
             if (HP > MaxHP) HP = MaxHP;
         }
 
-        // Atacar a otro caballero
-        public void Atacar(Caballero objetivo)
+        public void Atacar(object objetivo)
         {
-            int danioReal = DanioTotal() - objetivo.DefensaTotal();
-            if (danioReal < 0) danioReal = 0; // no puede curar al atacar
-            objetivo.HP -= danioReal;
-            if (objetivo.HP < 0) objetivo.HP = 0;
-
-            Console.WriteLine(Nombre + " atacó a " + objetivo.Nombre + " causando " + danioReal + " de daño");
+            if (objetivo is Caballero caballero)
+                AtacarCaballero(caballero);
+            else if (objetivo is Enano enano)
+                AtacarEnano(enano);
+            else if (objetivo is Elfo elfo)
+                AtacarElfo(elfo);
+            else if (objetivo is Mago mago)
+                AtacarMago(mago);
         }
 
-        // Recibir daño directo
-        public void RecibirDanio(int danio)
+        private void AtacarCaballero(Caballero o) => EjecutarAtaque(o, o.DefensaTotal());
+        private void AtacarEnano(Enano o) => EjecutarAtaque(o, o.DefensaTotal());
+        private void AtacarElfo(Elfo o) => EjecutarAtaque(o, o.DefensaTotal());
+        private void AtacarMago(Mago o) => EjecutarAtaque(o, o.DefensaTotal());
+
+        private void EjecutarAtaque(dynamic o, int defensa)
         {
-            int danioRecibido = danio - DefensaTotal();
-            if (danioRecibido < 0) danioRecibido = 0;
-            HP -= danioRecibido;
-            if (HP < 0) HP = 0;
+            int danioReal = DanioTotal() - defensa;
+            if (danioReal < 0) danioReal = 0;
+            o.HP -= danioReal;
+            if (o.HP < 0) o.HP = 0;
+
+            Console.WriteLine($"{Nombre} atacó a {o.Nombre} causando {danioReal} de daño");
+        }
+
+        public string ResumenStats()
+        {
+            return $"Caballero {Nombre} → Vida: {HP} | Daño: {DanioTotal()} | Defensa: {DefensaTotal()}";
         }
     }
 }

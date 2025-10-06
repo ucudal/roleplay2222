@@ -1,13 +1,14 @@
+
 using System;
 using System.Collections.Generic;
 
 namespace RoleplayGame.Library
 {
-    public class Hechizo
+    public class Hechizo : IObjeto
     {
-        public string Nombre;
-        public int Danio;
-        public int Defensa;
+        public string Nombre { get; }
+        public int Danio { get; }
+        public int Defensa { get; }
 
         public Hechizo(string nombre, int danio, int defensa)
         {
@@ -17,98 +18,81 @@ namespace RoleplayGame.Library
         }
     }
 
-    public class LibroDeHechizos
+    public class LibroDeHechizos : IObjeto
     {
         public List<Hechizo> Hechizos = new List<Hechizo>();
-
-        public int DanioTotal()
-        {
-            int total = 0;
-            foreach (var hechizo in Hechizos)
-            {
-                total += hechizo.Danio;
-            }
-            return total;
-        }
-
-        public int DefensaTotal()
-        {
-            int total = 0;
-            foreach (var hechizo in Hechizos)
-            {
-                total += hechizo.Defensa;
-            }
-            return total;
-        }
+        public int Danio => Hechizos.Sum(h => h.Danio);
+        public int Defensa => Hechizos.Sum(h => h.Defensa);
     }
 
-    public class TunicaMagica
+    public class TunicaMagica : IObjeto
     {
-        public int Defensa = 5;
-        public int Danio = 15;
+        public int Danio { get; } = 15;
+        public int Defensa { get; } = 5;
     }
 
     public class Mago
     {
         public string Nombre;
-        private int maxHP = 75;
-        private int hp;
-        public int HP
-        {
-            get { return hp; }
-            set
-            {
-                if (value > maxHP) hp = maxHP;
-                else if (value < 0) hp = 0;
-                else hp = value;
-            }
-        }
-
+        public int HP;
+        public int MaxHP = 75;
         public TunicaMagica Tunica;
         public LibroDeHechizos Libro;
 
-        public Mago(string nombre, int hp, TunicaMagica tunica = null, LibroDeHechizos libro = null)
+        public Mago(string nombre)
         {
             Nombre = nombre;
-            HP = hp;
-            Tunica = tunica;
-            Libro = libro;
+            HP = MaxHP;
+            Tunica = new TunicaMagica();
+            Libro = new LibroDeHechizos();
         }
 
-        public int DefensaTotal()
+        public int DanioTotal() => (Tunica?.Danio ?? 0) + (Libro?.Danio ?? 0);
+        public int DefensaTotal() => (Tunica?.Defensa ?? 0) + (Libro?.Defensa ?? 0);
+
+        public void AgregarItem(IObjeto item)
         {
-            int total = 0;
-            if (Tunica != null) total += Tunica.Defensa;
-            if (Libro != null) total += Libro.DefensaTotal();
-            return total;
+            if (item is TunicaMagica t) Tunica = t;
+            else if (item is LibroDeHechizos l) Libro = l;
         }
 
-        public int DanioTotal()
+        public void QuitarItem(IObjeto item)
         {
-            int total = 0;
-            if (Tunica != null) total += Tunica.Danio;
-            if (Libro != null) total += Libro.DanioTotal();
-            return total;
-        }
-
-        public string ResumenStats()
-        {
-            return "Defensa: " + DefensaTotal() + " | Daño: " + DanioTotal() + " | Vida: " + HP;
+            if (item == Tunica) Tunica = null;
+            if (item == Libro) Libro = null;
         }
 
         public void Cura()
         {
             HP += 15;
-            if (HP > maxHP) HP = maxHP;
+            if (HP > MaxHP) HP = MaxHP;
         }
-        public void Atacar(Mago objetivo)
-        {
-            int danioReal = DanioTotal() - objetivo.DefensaTotal();
-            if (danioReal < 0) danioReal = 0; // no puede curar al atacar
-            objetivo.HP -= danioReal;
-            if (objetivo.HP < 0) objetivo.HP = 0;
 
-            Console.WriteLine(Nombre + " ataco a " + objetivo.Nombre + " dañando " + danioReal + " de daño");
+        public void Atacar(object objetivo)
+        {
+            if (objetivo is Caballero caballero)
+                EjecutarAtaque(caballero, caballero.DefensaTotal());
+            else if (objetivo is Enano enano)
+                EjecutarAtaque(enano, enano.DefensaTotal());
+            else if (objetivo is Elfo elfo)
+                EjecutarAtaque(elfo, elfo.DefensaTotal());
+            else if (objetivo is Mago mago)
+                EjecutarAtaque(mago, mago.DefensaTotal());
+        }
+
+        private void EjecutarAtaque(dynamic o, int defensa)
+        {
+            int danioReal = DanioTotal() - defensa;
+            if (danioReal < 0) danioReal = 0;
+            o.HP -= danioReal;
+            if (o.HP < 0) o.HP = 0;
+
+            Console.WriteLine($"{Nombre} atacó a {o.Nombre} causando {danioReal} de daño");
+        }
+
+        public string ResumenStats()
+        {
+            return $"Mago {Nombre} → Vida: {HP} | Daño: {DanioTotal()} | Defensa: {DefensaTotal()}";
         }
     }
 }

@@ -25,4 +25,13 @@
     <ProjectReference Include="..\..\src\Library\Library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="test.cs" />
+    <Compile Remove="CharacterTests.cs" />
+    <Compile Remove="ExampleTest.cs" />
+    <Compile Remove="ATTACKTests.cs" />
+    <Compile Remove="ENANO TESTING.cs" />
+    <Compile Remove="TESTS.cs" />
+  </ItemGroup>
+
 </Project>

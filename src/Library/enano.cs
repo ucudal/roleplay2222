@@ -1,15 +1,17 @@
+using System;
+
 namespace RoleplayGame.Library
 {
-    // Clase Bolsa De Armas
-    public class BolsaDeArmas
+    public class BolsaDeArmas : IObjeto
     {
-        public int Danio = 30; // daño base de la bolsa de armas
+        public int Danio { get; } = 30;
+        public int Defensa { get; } = 0;
     }
 
-    // Clase Armadura Pesada 
-    public class ArmaduraPesada
+    public class ArmaduraPesada : IObjeto
     {
-        public int Defensa = 25; 
+        public int Danio { get; } = 0;
+        public int Defensa { get; } = 25;
     }
 
     public class Enano
@@ -21,7 +23,6 @@ namespace RoleplayGame.Library
         public BolsaDeArmas BolsaDeArmas;
         public ArmaduraPesada Armadura;
 
-        // Constructor
         public Enano(string nombre)
         {
             Nombre = nombre;
@@ -30,49 +31,52 @@ namespace RoleplayGame.Library
             Armadura = new ArmaduraPesada();
         }
 
-        // Daño total (solo la bolsa de armas)
-        public int DanioTotal()
+        public int DanioTotal() => BolsaDeArmas.Danio;
+        public int DefensaTotal() => Armadura.Defensa;
+
+        public void AgregarItem(IObjeto item)
         {
-            return BolsaDeArmas.Danio;
+            if (item is BolsaDeArmas b) BolsaDeArmas = b;
+            else if (item is ArmaduraPesada a) Armadura = a;
         }
 
-        // Defensa total (solo la armadura)
-        public int DefensaTotal()
+        public void QuitarItem(IObjeto item)
         {
-            return Armadura.Defensa;
+            if (item == BolsaDeArmas) BolsaDeArmas = null;
+            if (item == Armadura) Armadura = null;
         }
 
-        // Resumen de stats
-        public string ResumenStats()
-        {
-            return "Enano " + Nombre + " → Vida: " + HP + " | Daño: " + DanioTotal() + " | Defensa: " + DefensaTotal();
-        }
-
-        // Cura
         public void Cura()
         {
             HP += 20;
             if (HP > MaxHP) HP = MaxHP;
         }
 
-        // Atacar a otro enano
-        public void Atacar(Enano objetivo)
+        public void Atacar(object objetivo)
         {
-            int danioReal = DanioTotal() - objetivo.DefensaTotal();
-            if (danioReal < 0) danioReal = 0; // no puede curar al atacar
-            objetivo.HP -= danioReal;
-            if (objetivo.HP < 0) objetivo.HP = 0;
-
-            Console.WriteLine(Nombre + " atacó a " + objetivo.Nombre + " causando " + danioReal + " de daño");
+            if (objetivo is Caballero caballero)
+                EjecutarAtaque(caballero, caballero.DefensaTotal());
+            else if (objetivo is Enano enano)
+                EjecutarAtaque(enano, enano.DefensaTotal());
+            else if (objetivo is Elfo elfo)
+                EjecutarAtaque(elfo, elfo.DefensaTotal());
+            else if (objetivo is Mago mago)
+                EjecutarAtaque(mago, mago.DefensaTotal());
         }
 
-        // Recibir daño directo
-        public void RecibirDanio(int danio)
+        private void EjecutarAtaque(dynamic o, int defensa)
         {
-            int danioRecibido = danio - DefensaTotal();
-            if (danioRecibido < 0) danioRecibido = 0;
-            HP -= danioRecibido;
-            if (HP < 0) HP = 0;
+            int danioReal = DanioTotal() - defensa;
+            if (danioReal < 0) danioReal = 0;
+            o.HP -= danioReal;
+            if (o.HP < 0) o.HP = 0;
+            Console.WriteLine($"{Nombre} atacó a {o.Nombre} causando {danioReal} de daño");
+        }
+
+        public string ResumenStats()
+        {
+            return $"Enano {Nombre} → Vida: {HP} | Daño: {DanioTotal()} | Defensa: {DefensaTotal()}";
         }
     }
 }
+
