@@ -18,11 +18,13 @@ namespace RoleplayGame.Library
     }
 
     // Clase Elfo
-    public class Elfo : ICharacter
+    public class Elfo : IHero
     {
         public string Nombre { get; }
         public int HP { get; set; }
         public int MaxHP { get; } = 90;
+        
+        public int VP { get; set; } = 0;
 
         public Arco Arco { get; private set; }
         public Escudo Superpiedras { get; private set; }

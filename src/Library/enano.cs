@@ -16,11 +16,12 @@ namespace RoleplayGame.Library
     }
 
     // Clase Enano
-    public class Enano : ICharacter
+    public class Enano : IHero
     {
         public string Nombre { get; }
         public int HP { get; set; }
         public int MaxHP { get; } = 100;
+        public int VP { get; set; } = 0;
 
         public BolsaDeArmas BolsaDeArmas { get; private set; }
         public ArmaduraPesada Armadura { get; private set; }
@@ -87,5 +88,6 @@ namespace RoleplayGame.Library
         {
             return $"Enano {Nombre} → Vida: {HP} | Daño: {DanioTotal()} | Defensa: {DefensaTotal()}";
         }
+        
     }
 }
