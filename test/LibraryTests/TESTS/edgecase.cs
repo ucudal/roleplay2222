@@ -27,7 +27,7 @@ namespace RoleplayGame.Tests
             Mago mago = new Mago("Merlin");
 
             elfo.QuitarItem(elfo.Arco);
-            elfo.QuitarItem(elfo.Escudo);
+            elfo.QuitarItem(elfo.Superpiedras);
             mago.QuitarItem(mago.Tunica);
             mago.QuitarItem(mago.Libro);
 

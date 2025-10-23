@@ -23,7 +23,7 @@ namespace RoleplayGame.Tests
 
             // Quitamos items
             enano.QuitarItem(enano.Armadura);
-            elfo.QuitarItem(elfo.Escudo);
+            elfo.QuitarItem(elfo.Superpiedras);
             caballero.QuitarItem(caballero.Escudo);
             mago.QuitarItem(mago.Tunica);
 
