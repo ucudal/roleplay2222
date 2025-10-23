@@ -19,7 +19,7 @@ namespace RoleplayGame.Tests
             enano.AgregarItem(new BolsaDeArmas()); 
             enano.AgregarItem(new ArmaduraPesada());
             elfo.AgregarItem(new Arco());
-            elfo.AgregarItem(new Escudoo());
+            elfo.AgregarItem(new Superpiedras());
             caballero.AgregarItem(new Espada());
             caballero.AgregarItem(new Escudo());
             
