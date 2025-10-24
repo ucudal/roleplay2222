@@ -1,25 +1,28 @@
-namespace RoleplayGame.Library;
-
-public interface ICharacter
+namespace RoleplayGame.Library
 {
-    // Nombre del personaje
-    string Nombre { get; }
+    // Interfaz base para todos los personajes
+    public interface ICharacter
+    {
+        string Nombre { get; }
+        int HP { get; set; }
+        int DanioTotal();
+        int DefensaTotal();
+        void RecibirDanio(int cantidad);
+        void Atacar(ICharacter objetivo);
+        string ResumenStats();
+    }
 
-    // Vida actual
-    int HP { get; set; }
+    // Interfaz específica para héroes
+    public interface IHero : ICharacter
+    {
+        // Puntos de victoria acumulables
+        int VP { get; set; }
+    }
 
-    // Calcula el daño total que puede hacer el personaje
-    int DanioTotal();
-
-    // Calcula la defensa total del personaje
-    int DefensaTotal();
-
-    // Permite que un personaje reciba daño
-    void RecibirDanio(int cantidad);
-
-    // Permite que un personaje ataque a otro
-    void Atacar(ICharacter objetivo);
-
-    // Muestra un resumen de las estadísticas
-    string ResumenStats();
+    // Interfaz específica para enemigos
+    public interface IEnemy : ICharacter
+    {
+        // Puntos de victoria que el héroe recibe al derrotar al enemigo
+        int VP { get; }
+    }
 }

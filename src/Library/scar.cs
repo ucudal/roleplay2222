@@ -22,7 +22,7 @@ namespace RoleplayGame.Library
     // =========================
     // CLASE ENEMIGO
     // =========================
-    public class Scar : ICharacter
+    public class Scar : IEnemy
     {
         public string Nombre { get; }
         public int HP { get; set; }
@@ -30,30 +30,30 @@ namespace RoleplayGame.Library
 
         public int VP { get; } = 50; // Valor de victoria que otorga al morir
 
-        public Garrote Garrote { get; private set; }
-        public Coraza Coraza { get; private set; }
+        public Garrote GarroteItem { get; private set; }
+        public Coraza CorazaItem { get; private set; }
 
         public Scar(string nombre)
         {
             Nombre = nombre;
             HP = MaxHP;
-            Garrote = new Garrote();
-            Coraza = new Coraza();
+            GarroteItem = new Garrote();
+            CorazaItem = new Coraza();
         }
 
-        public int DanioTotal() => Garrote?.Danio ?? 0;
-        public int DefensaTotal() => Coraza?.Defensa ?? 0;
+        public int DanioTotal() => GarroteItem?.Danio ?? 0;
+        public int DefensaTotal() => CorazaItem?.Defensa ?? 0;
 
         public void AgregarItem(IObjeto item)
         {
-            if (item is Garrote g) Garrote = g;
-            else if (item is Coraza c) Coraza = c;
+            if (item is Garrote g) GarroteItem = g;
+            else if (item is Coraza c) CorazaItem = c;
         }
 
         public void QuitarItem(IObjeto item)
         {
-            if (item == Garrote) Garrote = null;
-            else if (item == Coraza) Coraza = null;
+            if (item == GarroteItem) GarroteItem = null;
+            else if (item == CorazaItem) CorazaItem = null;
         }
 
         public void Cura()
@@ -85,5 +85,4 @@ namespace RoleplayGame.Library
             return $"Enemigo {Nombre} → Vida: {HP} | Daño: {DanioTotal()} | Defensa: {DefensaTotal()} | VP: {VP}";
         }
     }
-    
 }

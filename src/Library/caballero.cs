@@ -3,11 +3,13 @@ using System;
 namespace RoleplayGame.Library
 {
     // Clase Caballero
-    public class Caballero : ICharacter
+    public class Caballero : IHero
     {
         public string Nombre { get; }
         public int HP { get; set; }
         public int MaxHP { get; } = 120;
+        
+        public int VP { get; set; } = 0;
 
         public Espada Espada { get; private set; }
         public Escudo Escudo { get; private set; }

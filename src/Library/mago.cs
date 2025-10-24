@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using RoleplayGame.Library;
 
 namespace RoleplayGame.Library
 {
@@ -34,11 +35,12 @@ namespace RoleplayGame.Library
     }
 
     // Clase Mago
-    public class Mago : ICharacter
+    public class Mago : IHero
     {
         public string Nombre { get; }
         public int HP { get; set; }
         public int MaxHP { get; } = 75;
+        public int VP { get; set; } = 0;
 
         public TunicaMagica Tunica { get; private set; }
         public LibroDeHechizos Libro { get; private set; }
