@@ -22,7 +22,7 @@ namespace RoleplayGame.Library
     // =========================
     // CLASE ENEMIGO
     // =========================
-    public class Scar : ICharacter
+    public class Scar : IEnemy
     {
         public string Nombre { get; }
         public int HP { get; set; }
