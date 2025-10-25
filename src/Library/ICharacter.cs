@@ -10,6 +10,7 @@ namespace RoleplayGame.Library
         void RecibirDanio(int cantidad);
         void Atacar(ICharacter objetivo);
         string ResumenStats();
+        void Cura();
     }
 
     // Interfaz específica para héroes

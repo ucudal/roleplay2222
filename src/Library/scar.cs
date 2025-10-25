@@ -28,7 +28,7 @@ namespace RoleplayGame.Library
         public int HP { get; set; }
         public int MaxHP { get; } = 80;
 
-        public int VP { get; } = 50; // Valor de victoria que otorga al morir
+        public int VP { get; } = 2; // Valor de victoria que otorga al morir
 
         public Garrote GarroteItem { get; private set; }
         public Coraza CorazaItem { get; private set; }
